@@ -1,18 +1,15 @@
 """
 Transform functions for Polars dataframes.
 
-This module contains implementations of various transformation functions that can be used
-with Polars dataframes for common data transformation tasks.
+This module contains implementations of various transformation functions that can
+be used with Polars dataframes for common data transformation tasks.
 """
 
-from typing import Any, Union
-
 import numpy as np
-import polars as pl
-from numba import float64, guvectorize
+from numba import float64, guvectorize  # type: ignore
 
 
-@guvectorize([(float64[:], float64[:])], "(n)->(n)")
+@guvectorize([(float64[:], float64[:])], "(n)->(n)")  # type: ignore[misc]
 def demean(arr: np.ndarray, result: np.ndarray) -> None:
     """
     Subtract the mean from each non-NaN value in an array.
@@ -44,8 +41,12 @@ def demean(arr: np.ndarray, result: np.ndarray) -> None:
     >>> s.cast(pl.Float64).to_numpy()
     array([ 1.,  2.,  3., nan,  5.])
     >>> 
-    >>> # Apply demean
-    >>> result = s.map_batches(lambda x: pl.Series(demean(x.to_numpy())))
+    >>> # With a Polars DataFrame
+    >>> df = pl.DataFrame({"values": s})
+    >>> # Apply demean with map_batches on expression
+    >>> result = df.select(
+    ...     pl.col("values").cast(pl.Float64).map_batches(lambda x: pl.Series(demean(x.to_numpy())))
+    ... ).get_column("values")
     >>> result
     shape: (5,)
     Series: '' [f64]

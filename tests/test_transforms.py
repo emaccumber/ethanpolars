@@ -2,7 +2,6 @@
 
 import numpy as np
 import polars as pl
-import pytest
 
 from ethanpolars import demean
 
@@ -43,8 +42,9 @@ def test_demean_polars():
     # Create a simple Polars Series
     s = pl.Series([1.0, 2.0, 3.0, 4.0, 5.0])
     
-    # Apply demean using map_batches
-    result = s.map_batches(lambda x: pl.Series(demean(x.to_numpy())))
+    # Apply demean using expression map_batches
+    df = pl.DataFrame({"value": s})
+    result = df.select(pl.col("value").map_batches(lambda x: pl.Series(demean(x.to_numpy())))).get_column("value")
     
     # Verify result
     expected = pl.Series([-2.0, -1.0, 0.0, 1.0, 2.0])
@@ -53,10 +53,11 @@ def test_demean_polars():
     # Test with nulls
     s_with_nulls = pl.Series([1.0, 2.0, None, 4.0, 5.0])
     
-    # Apply demean
-    result = s_with_nulls.cast(pl.Float64).map_batches(
-        lambda x: pl.Series(demean(x.to_numpy()))
-    )
+    # Apply demean using expression map_batches
+    df = pl.DataFrame({"value": s_with_nulls})
+    result = df.select(
+        pl.col("value").cast(pl.Float64).map_batches(lambda x: pl.Series(demean(x.to_numpy())))
+    ).get_column("value")
     
     # Verify result
     expected = pl.Series([-2.0, -1.0, None, 1.0, 2.0])

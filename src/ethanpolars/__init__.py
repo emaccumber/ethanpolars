@@ -5,7 +5,7 @@ This package provides a collection of utility functions that extend Polars funct
 with operations commonly used in data analysis workflows.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.1"
 
 from ethanpolars.transforms import demean
 

@@ -35,9 +35,7 @@ df = pl.DataFrame({
 
 # Apply demean to the column
 df = df.with_columns(
-    demeaned=pl.col("value").map_batches(
-        lambda x: pl.Series(demean(x.to_numpy()))
-    )
+    demeaned=pl.col("value").map_batches(lambda x: pl.Series(demean(x.to_numpy())))
 )
 
 print(df)
