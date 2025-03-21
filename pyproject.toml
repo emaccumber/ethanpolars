@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ethanpolars"
+version = "0.2.0"
+description = "Utility functions for working with Polars dataframes"
+readme = "README.md"
+authors = [
+    { name = "Ethan MacCumber", email = "ethanmacc@gmail.com" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Data Science",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "numba>=0.57.0",
+    "numpy>=1.22.0",
+    "polars>=0.18.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "ruff>=0.0.270",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ethanmaccumber/ethanpolars"
+"Bug Tracker" = "https://github.com/ethanmaccumber/ethanpolars/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ethanpolars"]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.ruff]
+select = ["E", "F", "I"]
+line-length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
