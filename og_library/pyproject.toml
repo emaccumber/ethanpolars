@@ -1,0 +1,16 @@
+[project]
+name = "ethanpolars"
+version = "0.2.0"
+description = "Some custom Polars functions that Ethan uses"
+readme = "README.md"
+authors = [
+    { name = "Ethan MacCumber", email = "ethanmacc@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "numba>=0.61.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
